@@ -15,6 +15,8 @@
     <script src="./app/ui/models/Mensagem.js"></script>
     <script src="./app/ui/views/MensagemView.js"></script>
     <script src="./app/util/Bind.js"></script>
+    <script src="./app/util/ApplicationException.js"></script>
+    <script src="./app/ui/converters/DataInvalidaException.js"></script>
     <script src="./app/app.js" defer></script>
 </head>
 <body class="container">
@@ -27,7 +29,7 @@
         
         <div class="form-group">
             <label for="data">Data</label>
-            <input type="date" id="data" class="form-control" required autofocus/>        
+            <input type="text" id="data" class="form-control" required autofocus/>        
         </div>    
         
         <div class="form-group">
