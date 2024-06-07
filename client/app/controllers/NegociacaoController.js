@@ -30,7 +30,6 @@ class NegociacaoController {
             this._mensagem.texto = 'Negociação adicionada com sucesso';
             this._limpaFormulario();  
         } catch (err) {
-            // console.log(err);
             console.log(err.stack);
 
             if (err instanceof DataInvalidaException) {
@@ -38,7 +37,6 @@ class NegociacaoController {
             } else {
                 this._mensagem.texto = "Um erro não esperado aconteceu. Entre em contato com o suporte";
             }
-           
         }
         
     }
@@ -63,18 +61,16 @@ class NegociacaoController {
     }
 
     importaNegociacoes() {
-        this._service.obterNegociacoesDaSemana((err, negociacoes) => {
-      
-            if (err) {
-                this._mensagem.texto = "Não foi possível obter as negociacôes da semana."
-                return;
-            }
-
-            negociacoes.forEach(negociacao => 
-                this._negociacoes.adiciona(negociacao)
+        this._service.obterNegociacoesDoPeriodo()
+        .then(negociacoes => {
+            negociacoes.filter(novaNegociacao => 
+                !this._negociacoes.paraArray().some(negociacaoExistente => 
+                    novaNegociacao.equals(negociacaoExistente)))
+            .forEach(
+                negociacao => this._negociacoes.adiciona(negociacao)
             );
-
-            this._mensagem.texto = "Negocações importadas com sucesso"
+                this._mensagem.texto = "Negocações do periodo importadas com sucesso"
         })
+        .catch(err => this._mensagem.texto = err);
     }
 }
