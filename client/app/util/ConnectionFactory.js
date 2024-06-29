@@ -10,12 +10,13 @@ const ConnectionFactory = (() => {
     
         static getConnection() {
             return new Promise((resolve, reject) => {
-    
+
                 if (connection) return resolve(connection);
     
-                const openRequest = indexedDB.open('jscangaceiro', 2);
-
+                const openRequest = indexedDB.open('jscangaceiro', 1);
+             
                 openRequest.onupgradeneeded = e => {
+                    console.log(e.target.result)
                     ConnectionFactory._createStores(e.target.result)
                 };
     
@@ -39,10 +40,13 @@ const ConnectionFactory = (() => {
         static _createStores(connection) {
 
             stores.forEach(store => {
-                if (connection.objectStoreNames.contains(store)) {
+
+                console.log(store)
+                if (connection.objectStoreNames.contains(store)) 
                     connection.deleteObjectStore(store);
-                    connection.createObjectStore(store, { autoIncrement: true })
-                }
+
+                connection.createObjectStore(store, { autoIncrement: true });
+                
             })
         }
 
